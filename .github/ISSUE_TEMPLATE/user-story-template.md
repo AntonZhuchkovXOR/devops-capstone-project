@@ -1,6 +1,6 @@
 ---
-name: General Template
-about: Describe this issue template's purpose here.
+name: User story template
+about: This is general user story template
 title: ''
 labels: ''
 assignees: ''
