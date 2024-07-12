@@ -29,7 +29,7 @@ def index():
         jsonify(
             name="Account REST API Service",
             version="1.0",
-            # paths=url_for("list_accounts", _external=True),
+            paths=url_for("list_accounts", _external=True),
         ),
         status.HTTP_200_OK,
     )
@@ -59,7 +59,16 @@ def create_accounts():
 # LIST ALL ACCOUNTS
 ######################################################################
 
-# ... place you code here to LIST accounts ...
+@app.route("/accounts", methods=["GET"])
+def list_accounts():
+    """
+    List all Accounts
+    This endpoint will return all accounts in the database
+    """
+    app.logger.info("Request to list Accounts")
+    accounts = Account.all()
+    return_list = [account.serialize() for account in accounts]
+    return jsonify(return_list), status.HTTP_200_OK
 
 
 ######################################################################
@@ -120,7 +129,6 @@ def delete_accounts(account_id):
     if acc:
         acc.delete()
     return "", status.HTTP_204_NO_CONTENT
-
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S

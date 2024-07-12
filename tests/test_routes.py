@@ -186,3 +186,20 @@ class TestAccountService(TestCase):
         # test deleting non-existent account
         response = self.client.delete(f"{BASE_URL}/0")
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_all_accounts(self):
+        """It should list all accounts"""
+        response = self.client.get(f"{BASE_URL}", content_type = "application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        accounts = response.get_json()
+        self.assertTrue(len(accounts) == 0)
+        self._create_accounts(15)
+        response = self.client.get(f"{BASE_URL}", content_type = "application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        accounts = response.get_json()
+        self.assertTrue(len(accounts) == 15)
+
+    def test_illegal_method_call(self):
+        """It should not allow illegal method calls"""
+        resp = self.client.delete(BASE_URL)
+        self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
