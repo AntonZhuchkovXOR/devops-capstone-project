@@ -158,8 +158,8 @@ class TestAccountService(TestCase):
         account.name = "Vasily Pupkin"
         response = self.client.put(
             f"{BASE_URL}/{account.id}",
-            json = account.serialize(),
-            content_type = "application/json"
+            json=account.serialize(),
+            content_type="application/json"
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         returned_name = response.get_json()["name"]
@@ -170,7 +170,7 @@ class TestAccountService(TestCase):
         account = AccountFactory()
         response = self.client.put(
             f"{BASE_URL}/0",
-            json=account.serialize(), 
+            json=account.serialize(),
             content_type="application/json"
         )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
@@ -192,12 +192,12 @@ class TestAccountService(TestCase):
 
     def test_all_accounts(self):
         """It should list all accounts"""
-        response = self.client.get(f"{BASE_URL}", content_type = "application/json")
+        response = self.client.get(f"{BASE_URL}", content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         accounts = response.get_json()
         self.assertTrue(len(accounts) == 0)
         self._create_accounts(15)
-        response = self.client.get(f"{BASE_URL}", content_type = "application/json")
+        response = self.client.get(f"{BASE_URL}", content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         accounts = response.get_json()
         self.assertTrue(len(accounts) == 15)
